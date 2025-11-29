@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>MAWORLD — проекты Музаффара</title>
+
+  <meta name="description" content="Все проекты Музаффара в одном месте: AI, инструменты, игры, творчество">
+  <meta name="keywords" content="Музаффар, MAWORLD, проекты, веб-разработка">
+  <meta name="author" content="Шарипов Музаффар">
+  <meta name="robots" content="index, follow">
+
+  <!-- Иконки Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-color: #00ffc8;
+      --secondary-color: #00aaff;
+      --accent-color: #ff00aa;
+      --bg-color: #0d0d1a;
+      --card-bg: rgba(20, 20, 40, 0.5);
+      --card-border: 1px solid rgba(0, 255, 200, 0.2);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background-color: var(--bg-color);
+      color: #ffffff;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      overflow-x: hidden;
+      background: radial-gradient(circle at 20% 30%, #1a0d2a 0%, var(--bg-color) 40%);
+      position: relative;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(0, 255, 200, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(0, 170, 255, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 50% 50%, rgba(255, 0, 170, 0.05) 0%, transparent 30%);
+      z-index: -1;
+      animation: background-pulse 15s infinite alternate;
+    }
+    
+    @keyframes background-pulse {
+      0% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+    
+    .floating-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .particle {
+      position: absolute;
+      background: rgba(0, 255, 200, 0.3);
+      border-radius: 50%;
+      animation: float 20s infinite linear;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      text-align: center;
+      padding: 40px 30px;
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 25px;
+      box-shadow: 
+        0 0 40px rgba(0, 255, 200, 0.2),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent, 
+        rgba(0, 255, 200, 0.1), 
+        transparent
+      );
+      transform: rotate(45deg);
+      animation: shine 8s infinite linear;
+      z-index: -1;
+    }
+    
+    @keyframes shine {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+    
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 4.5em;
+      font-weight: 900;
+      color: var(--primary-color);
+      text-shadow: 
+        0 0 10px var(--primary-color),
+        0 0 20px var(--primary-color),
+        0 0 30px var(--primary-color);
+      margin-bottom: 15px;
+      letter-spacing: 2px;
+      position: relative;
+      display: inline-block;
+      animation: title-glow 3s infinite alternate;
+    }
+    
+    @keyframes title-glow {
+      0% { 
+        text-shadow: 
+          0 0 10px var(--primary-color),
+          0 0 20px var(--primary-color),
+          0 0 30px var(--primary-color);
+        transform: scale(1);
+      }
+      100% { 
+        text-shadow: 
+          0 0 15px var(--primary-color),
+          0 0 30px var(--primary-color),
+          0 0 45px var(--primary-color);
+        transform: scale(1.02);
+      }
+    }
+    
+    .tagline {
+      font-size: 1.4em;
+      color: var(--secondary-color);
+      margin-bottom: 30px;
+      font-weight: 300;
+      letter-spacing: 1px;
+      animation: fadeIn 1.5s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .search-box {
+      margin-bottom: 40px;
+      position: relative;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 18px 25px;
+      border-radius: 15px;
+      border: var(--card-border);
+      background-color: rgba(10, 10, 25, 0.7);
+      color: #fff;
+      font-size: 1.1em;
+      outline: none;
+      box-shadow: 0 0 15px rgba(0, 255, 200, 0.3);
+      transition: all 0.4s ease;
+      font-family: 'Exo 2', sans-serif;
+    }
+    
+    .search-input:focus {
+      box-shadow: 0 0 25px rgba(0, 255, 200, 0.6);
+      background-color: rgba(15, 15, 35, 0.8);
+      transform: translateY(-3px);
+    }
+    
+    .search-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-color);
+      font-size: 1.2em;
+    }
+    
+    /* Категории */
+    .categories {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 40px;
+    }
+    
+    .category-btn {
+      background-color: rgba(20, 20, 40, 0.7);
+      border: var(--card-border);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      font-size: 0.95em;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .category-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transition: all 0.4s ease;
+      z-index: -1;
+    }
+    
+    .category-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 255, 200, 0.3);
+      color: #0d0d1a;
+    }
+    
+    .category-btn:hover::before {
+      width: 100%;
+    }
+    
+    .category-btn.active {
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      color: var(--bg-color);
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(0, 255, 200, 0.5);
+      transform: translateY(-3px);
+    }
+    
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 25px;
+    }
+    
+    .project-card {
+      background: linear-gradient(145deg, rgba(30, 30, 60, 0.7), rgba(15, 15, 35, 0.7));
+      border: var(--card-border);
+      border-radius: 20px;
+      padding: 30px 25px;
+      text-decoration: none;
+      color: #ffffff;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, var(--primary-color) 0%, transparent 70%);
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.5s ease;
+      z-index: -1;
+    }
+    
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
+      border-radius: 22px;
+      z-index: -2;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    
+    .project-card:hover {
+      transform: translateY(-15px) scale(1.03);
+      box-shadow: 
+        0 15px 30px rgba(0, 255, 200, 0.4),
+        0 0 0 1px rgba(0, 255, 200, 0.1);
+    }
+    
+    .project-card:hover::before {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    
+    .project-card:hover::after {
+      opacity: 1;
+      animation: border-glow 2s infinite linear;
+    }
+    
+    @keyframes border-glow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .card-icon {
+      font-size: 3em;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+      transition: all 0.4s ease;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .project-card:hover .card-icon {
+      transform: scale(1.2) rotate(5deg);
+      color: #fff;
+      text-shadow: 0 0 10px var(--primary-color);
+    }
+    
+    .card-title {
+      font-size: 1.6em;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      transition: all 0.4s ease;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .project-card:hover .card-title {
+      color: #fff;
+      text-shadow: 0 0 10px var(--primary-color);
+    }
+    
+    .card-description {
+      font-size: 1em;
+      color: #ccc;
+      line-height: 1.5;
+      transition: all 0.4s ease;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .project-card:hover .card-description {
+      color: #fff;
+    }
+    
+    .card-category {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--secondary-color);
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.7em;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.4s ease;
+      z-index: 3;
+    }
+    
+    .project-card:hover .card-category {
+      background: rgba(0, 0, 0, 0.7);
+      color: var(--primary-color);
+    }
+    
+    footer {
+      margin-top: 60px;
+      font-size: 0.9em;
+      color: #777;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    footer a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    footer a:hover {
+      color: var(--primary-color);
+      text-decoration: underline;
+    }
+    
+    /* Адаптивность для iPhone */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+        display: block;
+      }
+      
+      .container {
+        padding: 25px 15px;
+        margin: 0;
+        border-radius: 20px;
+      }
+      
+      h1 {
+        font-size: 2.8em;
+      }
+      
+      .tagline {
+        font-size: 1.1em;
+      }
+      
+      .search-input {
+        padding: 16px 20px;
+        font-size: 16px;
+      }
+      
+      .categories {
+        gap: 10px;
+      }
+      
+      .category-btn {
+        padding: 10px 15px;
+        font-size: 0.85em;
+      }
+      
+      .project-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      .project-card {
+        padding: 25px 20px;
+      }
+      
+      .card-icon {
+        font-size: 2.5em;
+      }
+      
+      .card-title {
+        font-size: 1.4em;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2.2em;
+      }
+      
+      .tagline {
+        font-size: 1em;
+      }
+      
+      .container {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Плавающие частицы -->
+  <div class="floating-particles" id="particles"></div>
+
+  <div class="container">
+    <h1>MAWORLD</h1>
+    <p class="tagline">Все мои проекты в одном месте</p>
+
+    <div class="search-box">
+      <input type="text" id="search" class="search-input" placeholder="Поиск проектов...">
+      <div class="search-icon"><i class="fas fa-search"></i></div>
+    </div>
+    
+    <!-- Категории -->
+    <div class="categories">
+      <button class="category-btn active" data-category="all">Все</button>
+      <button class="category-btn" data-category="ai">AI</button>
+      <button class="category-btn" data-category="media">Медиа</button>
+      <button class="category-btn" data-category="tools">Инструменты</button>
+      <button class="category-btn" data-category="finance">Финансы</button>
+      <button class="category-btn" data-category="games">Игры</button>
+      <button class="category-btn" data-category="creative">Креатив</button>
+    </div>
+
+    <div class="project-grid" id="projects">
+      <!-- Paint -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/paint.html" class="project-card" data-category="creative">
+        <div class="card-category">Креатив</div>
+        <div class="card-icon"><i class="fas fa-paint-brush"></i></div>
+        <div class="card-title">Paint</div>
+        <div class="card-description">Рисуй и создавай цифровые эскизы</div>
+      </a>
+      
+      <!-- Фильмы и книги -->
+      <a href="https://muzaffar699.github.io/Muzaffar-films-and-books/#gsc.tab=0" class="project-card" data-category="media">
+        <div class="card-category">Медиа</div>
+        <div class="card-icon"><i class="fas fa-film"></i></div>
+        <div class="card-title">Фильмы и книги</div>
+        <div class="card-description">Смотри и развивайся</div>
+      </a>
+       <a href="https://muzaffar699.github.io/Muzaffar-/foun.html" class="project-card" data-category="media">
+        <div class="card-category">Медиа</div>
+        <div class="card-icon"><i class="fa fa-phone"></i></div>
+        <div class="card-title">Связь</div>
+        <div class="card-description">Звони по всему миру </div>
+      </a>
+      
+      <!-- Магазин -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/shop.html" class="project-card" data-category="finance">
+        <div class="card-category">Финансы</div>
+        <div class="card-icon"><i class="fas fa-shopping-cart"></i></div>
+        <div class="card-title">Магазин</div>
+        <div class="card-description">Покупай и продавай</div>
+      </a>
+      
+      <!-- Тест личности -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/typ.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-user"></i></div>
+        <div class="card-title">Тест личности</div>
+        <div class="card-description">Пройди тест</div>
+      </a>
+      
+      <!-- Банк -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/Muzaffarbank" class="project-card" data-category="finance">
+        <div class="card-category">Финансы</div>
+        <div class="card-icon"><i class="fas fa-university"></i></div>
+        <div class="card-title">MUZAFFAR BANK</div>
+        <div class="card-description">Переводи деньги</div>
+      </a>
+      
+      <!-- Dream -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/dream" class="project-card" data-category="finance">
+        <div class="card-category">Финансы</div>
+        <div class="card-icon"><i class="fas fa-hand-holding-heart"></i></div>
+        <div class="card-title">MUZAFFAR DREAM</div>
+        <div class="card-description">Помогай нуждающимся</div>
+      </a>
+      
+      <!-- Сервисы -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/service" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-concierge-bell"></i></div>
+        <div class="card-title">MUZAFFAR Сервисы</div>
+        <div class="card-description">Находи услуги рядом</div>
+      </a>
+      
+      <!-- Время -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/time" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-clock"></i></div>
+        <div class="card-title">MUZAFFAR время</div>
+        <div class="card-description">Мировое время</div>
+      </a>
+      
+      <!-- Навигатор -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/map.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-map-marked-alt"></i></div>
+        <div class="card-title">MUZAFFAR навигатор</div>
+        <div class="card-description">Карты и поиск мест</div>
+      </a>
+      
+      <!-- Викторина -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/7.html" class="project-card" data-category="games">
+        <div class="card-category">Игры</div>
+        <div class="card-icon"><i class="fas fa-brain"></i></div>
+        <div class="card-title">MUZAFFAR викторина</div>
+        <div class="card-description">Тесты и викторины</div>
+      </a>
+      
+      <!-- AI Помощник -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/ai.html" class="project-card" data-category="ai">
+        <div class="card-category">AI</div>
+        <div class="card-icon"><i class="fas fa-robot"></i></div>
+        <div class="card-title">MUZAFFAR помощник</div>
+        <div class="card-description">AI ассистент</div>
+      </a>
+      
+      <!-- Ссылка -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/link.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-link"></i></div>
+        <div class="card-title">MUZAFFAR ссылка</div>
+        <div class="card-description">Менеджер ссылок</div>
+      </a>
+      
+      <!-- Планировщик -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/day.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
+        <div class="card-title">MUZAFFAR планировщик</div>
+        <div class="card-description">Календарь и задачи</div>
+      </a>
+      
+      <!-- Бронирование -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/room.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-hotel"></i></div>
+        <div class="card-title">MUZAFFAR бронирование</div>
+        <div class="card-description">Бронирование номеров</div>
+      </a>
+      
+      <!-- Такси -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/taxi.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-taxi"></i></div>
+        <div class="card-title">Такси</div>
+        <div class="card-description">Заказывай такси</div>
+      </a>
+      
+      <!-- Видео -->
+      <a href="https://muzaffar699.github.io/9/" class="project-card" data-category="media">
+        <div class="card-category">Медиа</div>
+        <div class="card-icon"><i class="fas fa-video"></i></div>
+        <div class="card-title">Видео</div>
+        <div class="card-description">Смотри видео</div>
+      </a>
+      
+      <!-- Словарь -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/%D1%81%D0%BB%D0%BE%D0%B2%D0%B0%D1%80%D1%8C.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-book"></i></div>
+        <div class="card-title">Словарь</div>
+        <div class="card-description">Поиск слов</div>
+      </a>
+      
+      <!-- Браузер -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/%D0%B1%D1%80%D0%B0%D1%83%D0%B7%D0%B5%D1%80.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-compass"></i></div>
+        <div class="card-title">Браузер</div>
+        <div class="card-description">Веб-браузер</div>
+      </a>
+      
+      <!-- Конвертер валют -->
+      <a href="https://muzaffar699.github.io/-1/" class="project-card" data-category="finance">
+        <div class="card-category">Финансы</div>
+        <div class="card-icon"><i class="fas fa-exchange-alt"></i></div>
+        <div class="card-title">Конвертер валют</div>
+        <div class="card-description">Конвертация валют</div>
+      </a>
+      
+      <!-- Hub -->
+      <a href="https://muzaffar699.github.io/M/" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <div class="card-title">Музаффар Hub</div>
+        <div class="card-description">Загружай проекты</div>
+      </a>
+      
+      <!-- Погода -->
+      <a href="https://muzaffar699.github.io/-MUZAFFARA/" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-cloud-sun"></i></div>
+        <div class="card-title">Погода</div>
+        <div class="card-description">Прогноз погоды</div>
+      </a>
+      
+      <!-- Чат -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/chat.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-comments"></i></div>
+        <div class="card-title">Muzaffar чат</div>
+        <div class="card-description">Общайся онлайн</div>
+      </a>
+      
+      <!-- Карта -->
+      <a href="https://muzaffar699.github.io/vigilant-octo-waffle/" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-map"></i></div>
+        <div class="card-title">Карта</div>
+        <div class="card-description">Найди любое место</div>
+      </a>
+      
+      <!-- Игры -->
+      <a href="https://muzaffar699.github.io/book/index.html" class="project-card" data-category="games">
+        <div class="card-category">Игры</div>
+        <div class="card-icon"><i class="fas fa-gamepad"></i></div>
+        <div class="card-title">Портал игр</div>
+        <div class="card-description">Играй и развивайся</div>
+      </a>
+      
+      <!-- HTML Editor -->
+      <a href="https://muzaffar699.github.io/html-editor/" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-code"></i></div>
+        <div class="card-title">HTML Editor</div>
+        <div class="card-description">Редактор кода</div>
+      </a>
+      
+      <!-- OS -->
+      <a href="https://mrworld819.github.io/Muzaffar-/os.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-desktop"></i></div>
+        <div class="card-title">MUZAFFAR OS</div>
+        <div class="card-description">Веб-операционная система</div>
+      </a>
+      
+      <!-- Облако -->
+      <a href="https://mrworld819.github.io/Muzaffar-/memory" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-cloud"></i></div>
+        <div class="card-title">Облако</div>
+        <div class="card-description">Облачное хранилище</div>
+      </a>
+      
+      <!-- Переводчик -->
+      <a href="https://mrworld819.github.io/Muzaffar-/t.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-language"></i></div>
+        <div class="card-title">Переводчик</div>
+        <div class="card-description">Мгновенный перевод</div>
+      </a>
+      
+      <!-- Новости -->
+      <a href="https://mrworld819.github.io/Muzaffar-/nevs.html" class="project-card" data-category="media">
+        <div class="card-category">Медиа</div>
+        <div class="card-icon"><i class="fas fa-newspaper"></i></div>
+        <div class="card-title">Новости</div>
+        <div class="card-description">Свежие новости</div>
+      </a>
+      
+      <!-- Музыка -->
+      <a href="https://mrworld819.github.io/Muzaffar-/nevs.html" class="project-card" data-category="media">
+        <div class="card-category">Медиа</div>
+        <div class="card-icon"><i class="fas fa-music"></i></div>
+        <div class="card-title">Музыка</div>
+        <div class="card-description">Слушай музыку</div>
+      </a>
+      
+      <!-- Финансы -->
+      <a href="https://mrworld819.github.io/3/" class="project-card" data-category="finance">
+        <div class="card-category">Финансы</div>
+        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+        <div class="card-title">Финансы</div>
+        <div class="card-description">Учет доходов</div>
+      </a>
+      
+      <!-- Энциклопедия -->
+      <a href="https://mrworld819.github.io/-ywbrkjgtlbz/" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-search"></i></div>
+        <div class="card-title">Энциклопедия</div>
+        <div class="card-description">База знаний</div>
+      </a>
+      
+      <!-- Обо мне -->
+      <a href="https://mrworld819.github.io/-muzaffa/" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-user-circle"></i></div>
+        <div class="card-title">Обо мне</div>
+        <div class="card-description">О проекте и авторе</div>
+      </a>
+      
+      <!-- AI Ассистент -->
+      <a href="https://share.character.ai/Wv9R/tbxe6z7n" class="project-card" data-category="ai">
+        <div class="card-category">AI</div>
+        <div class="card-icon"><i class="fas fa-robot"></i></div>
+        <div class="card-title">AI Ассистент</div>
+        <div class="card-description">Умный помощник</div>
+      </a>
+      
+      <!-- Трекер привычек -->
+      <a href="https://mrworld819.github.io/Muzaffar-/%D0%BF%D1%80%D0%B8%D0%B2%D1%8B%D1%87%D0%BA%D0%B8.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-tasks"></i></div>
+        <div class="card-title">Трекер привычек</div>
+        <div class="card-description">Формируй привычки</div>
+      </a>
+      
+      <!-- Планировщик -->
+      <a href="https://mrworld819.github.io/Muzaffar-/%D0%BF%D0%BB%D0%B0%D0%BD%D0%B8%D1%80%D0%BE%D0%B2%D1%89%D0%B8%D0%BA.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-calendar-check"></i></div>
+        <div class="card-title">Планировщик задач</div>
+        <div class="card-description">Организуй время</div>
+      </a>
+      
+      <!-- Калькулятор -->
+      <a href="https://mrworld819.github.io/Muzaffar-/calculator.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-calculator"></i></div>
+        <div class="card-title">Калькулятор</div>
+        <div class="card-description">Научный калькулятор</div>
+      </a>
+      
+      <!-- QR Генератор -->
+      <a href="https://mrworld819.github.io/Muzaffar-/Qr.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-qrcode"></i></div>
+        <div class="card-title">QR Генератор</div>
+        <div class="card-description">Создавай QR-коды</div>
+      </a>
+      
+      <!-- Генератор идей -->
+      <a href="https://mrworld819.github.io/Muzaffar-/ideya.html" class="project-card" data-category="tools">
+        <div class="card-category">Инструменты</div>
+        <div class="card-icon"><i class="fas fa-lightbulb"></i></div>
+        <div class="card-title">Генератор идей</div>
+        <div class="card-description">Находи вдохновение</div>
+      </a>
+      
+      <!-- Фоторедактор -->
+      <a href="https://muzaffar699.github.io/Muzaffar-/foto.html" class="project-card" data-category="creative">
+        <div class="card-category">Креатив</div>
+        <div class="card-icon"><i class="fas fa-image"></i></div>
+        <div class="card-title">Фоторедактор</div>
+        <div class="card-description">Редактируй фото</div>
+      </a>
+    </div>
+    
+    <footer>
+      Основатель Шарипов Музаффар © 2025 | <a href="https://muzaffar699.github.io/4/">О нас</a>
+    </footer>
+  </div>
+
+  <script>
+    // Создание плавающих частиц
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Случайный размер
+        const size = Math.random() * 5 + 2;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Случайная позиция
+        particle.style.left = `${Math.random() * 100}vw`;
+        particle.style.top = `${Math.random() * 100}vh`;
+        
+        // Случайная задержка анимации
+        particle.style.animationDelay = `${Math.random() * 20}s`;
+        
+        // Случайный цвет
+        const colors = [
+          'rgba(0, 255, 200, 0.5)',
+          'rgba(0, 170, 255, 0.5)',
+          'rgba(255, 0, 170, 0.3)'
+        ];
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+    
+    // Поиск и фильтрация
+    const searchInput = document.getElementById('search');
+    const projects = document.querySelectorAll('.project-card');
+    const categoryBtns = document.querySelectorAll('.category-btn');
+
+    // Поиск
+    searchInput.addEventListener('input', () => {
+      const value = searchInput.value.toLowerCase();
+      projects.forEach(card => {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const desc = card.querySelector('.card-description').textContent.toLowerCase();
+        if (title.includes(value) || desc.includes(value)) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+
+    // Категории
+    categoryBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Убираем активный класс у всех кнопок
+        categoryBtns.forEach(b => b.classList.remove('active'));
+        // Добавляем активный класс нажатой кнопке
+        btn.classList.add('active');
+        
+        const category = btn.getAttribute('data-category');
+        
+        projects.forEach(card => {
+          if (category === 'all' || card.getAttribute('data-category') === category) {
+            card.style.display = "flex";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      });
+    });
+    
+    // Инициализация
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+    });
+  </script>
+</body>
+</html>
