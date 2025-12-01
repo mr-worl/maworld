@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>JARVIS Ultimate v9</title>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/hand-pose-detection"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<style>
+body { background:#111; color:#0ff; font-family:Consolas, monospace; text-align:center; }
+h1 { text-shadow:0 0 15px #0ff; margin-top:20px; font-size:3em; }
+video, canvas { position:fixed; bottom:10px; right:10px; width:300px; border:2px solid #0ff; border-radius:10px; transform:scaleX(-1);}
+button { margin-top:20px; padding:10px 30px; font-size:20px; background:#0ff; color:#000; border:none; border-radius:12px; cursor:pointer; transition:0.3s; }
+button:hover { background:#0aa; color:#fff; }
+#status { margin-top:20px; font-size:18px; }
+#player { margin-top:20px; width:560px; height:315px; border:2px solid #0ff; border-radius:10px; display:none; }
+</style>
+</head>
+<body>
+<h1>🧠 Muzaffar ai</h1>
+<p id="status">Нажми "Активировать", чтобы запустить голос и камеру.</p>
+<div id="player"></div>
+<video id="video" autoplay></video>
+<canvas id="canvas"></canvas>
+<button id="startBtn">🚀 Активировать</button>
+
+<script>
+let currentVolume = 1.0;
+const synth = window.speechSynthesis;
+let hasSpokenReady = false;
+let recognition;
+let player;
+let isPlayerReady = false;
+
+function speak(text) {
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "ru-RU";
+  msg.rate = 1.0;
+  msg.volume = currentVolume;
+  synth.speak(msg);
+}
+
+// === YouTube API ===
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player("player", {
+    height: "315",
+    width: "560",
+    videoId: "Hd5nXTyaXZg",
+    events: { onReady: () => { isPlayerReady = true; } }
+  });
+}
+
+// === Голосовое управление ===
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+function startRecognition() {
+  recognition = new SpeechRecognition();
+  recognition.lang = "ru-RU";
+  recognition.continuous = true;
+  recognition.interimResults = false;
+
+  recognition.onresult = event => {
+    const phrase = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
+    document.getElementById("status").textContent = "🗣️ " + phrase;
+    processCommand(phrase);
+  };
+
+  recognition.onerror = e => console.warn("Speech error:", e.error);
+  recognition.onend = () => setTimeout(()=>recognition.start(), 250);
+  recognition.start();
+
+  if (!hasSpokenReady) { speak("Готов работать, сэр"); hasSpokenReady = true; }
+}
+
+// === Основная логика ===
+function processCommand(phrase) {
+  // --- Музыка / YouTube ---
+  if (phrase.includes("музыка")) {
+    if (isPlayerReady) { document.getElementById("player").style.display="block"; player.playVideo(); speak("Включаю музыку, сэр"); }
+  } else if (phrase.includes("пауза") && isPlayerReady) { player.pauseVideo(); speak("Музыка на паузе, сэр"); }
+  else if (phrase.includes("продолжай") && isPlayerReady) { player.playVideo(); speak("Продолжаю воспроизведение, сэр"); }
+  else if (phrase.includes("останови музыку") && isPlayerReady) { player.stopVideo(); speak("Музыка остановлена, сэр"); }
+  else if (phrase.includes("громче") && isPlayerReady) { let v=player.getVolume(); player.setVolume(Math.min(100,v+10)); speak("Громкость "+player.getVolume()+"%, сэр"); }
+  else if (phrase.includes("тише") && isPlayerReady) { let v=player.getVolume(); player.setVolume(Math.max(0,v-10)); speak("Громкость "+player.getVolume()+"%, сэр"); }
+
+  // --- Сайты ---
+  else if (phrase.includes("домой")) { speak("Открываю ваш сайт сэр"); window.open("https://muzaffar699.github.io/Muzaffar-/","_blank"); }
+  else if (phrase.includes("youtube")) { speak("Открываю YouTube сэр"); window.open("https://youtube.com","_blank"); }
+else if (phrase.includes("за работу")) { speak("продолжим работать сэр");window.open("https://htmleditor.gitlab.io/","_blank"); }
+  else if (phrase.includes("telegram")) { speak("Открываю Telegram, сэр"); window.open("https://web.telegram.org/","_blank"); }
+  else if (phrase.includes("вк")) { speak("Открываю ВКонтакте, сэр"); window.open("https://vk.com/feed","_blank"); }
+  else if (phrase.includes("дискорд")) { speak("Открываю Discord, сэр"); window.open("https://discord.com/app","_blank"); }
+  else if (phrase.includes("документы")) { speak("Открываю Google Документы, сэр"); window.open("https://docs.google.com/","_blank"); }
+  else if (phrase.includes("новости")) { speak("Открываю новости, сэр"); window.open("https://muzaffar699.github.io/Muzaffar-/nevs.html","_blank"); }
+  else if (phrase.includes("банк")) { speak("Открываю банк, сэр"); window.open("https://muzaffar699.github.io/Muzaffar-/Muzaffarbank","_blank"); }
+  else if (phrase.includes("погоду")) { speak("Открываю прогноз погоды, сэр"); window.open("https://www.google.com/search?q=погода","_blank"); }
+
+  // --- Фото ---
+  else if (phrase.includes("сделай фото")) { takeSnapshot(); }
+
+  // --- Ответы ---
+  else if (phrase.includes("время")) { const now=new Date(); speak(`Сэр, сейчас ${now.getHours()} часов ${now.getMinutes()} минут`); }
+  else if (phrase.includes("спасибо")) { speak("Всегда рад помочь, сэр"); }
+  else if (phrase.includes("как дела")) { speak("Работаю стабильно, сэр. Надеюсь, у вас тоже всё хорошо"); }
+  else if (phrase.includes("кто тебя вырастил")) { speak("Меня вырастил Шарипов Музаффар Анварович, сэр"); }
+  else if (phrase.includes("стоп")) { synth.cancel(); speak("Как прикажете, сэр"); }
+}
+
+// === Фото с камеры ===
+function takeSnapshot() {
+  const snapCanvas=document.createElement("canvas");
+  snapCanvas.width=video.videoWidth;
+  snapCanvas.height=video.videoHeight;
+  const ctxSnap=snapCanvas.getContext("2d");
+  ctxSnap.drawImage(video,0,0,snapCanvas.width,snapCanvas.height);
+  const link=document.createElement("a");
+  link.download="jarvis_snapshot.png";
+  link.href=snapCanvas.toDataURL("image/png");
+  link.click();
+  speak("Фото сделано, сэр");
+}
+
+// === Камера и жесты ===
+const video=document.getElementById("video");
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+let gestureCooldown=false;
+
+async function startCamera() {
+  const stream=await navigator.mediaDevices.getUserMedia({ video:{ facingMode:"user", width:640, height:480 }, audio:false });
+  video.srcObject=stream;
+  await new Promise(resolve=>video.onloadedmetadata=resolve);
+  canvas.width=video.videoWidth;
+  canvas.height=video.videoHeight;
+}
+
+function recognizeGesture(keypoints){
+  const thumbTip=keypoints[4], indexTip=keypoints[8], middleTip=keypoints[12], ringTip=keypoints[16], pinkyTip=keypoints[20];
+  if(indexTip.y<middleTip.y && middleTip.y<ringTip.y && ringTip.y<pinkyTip.y) return "Привет";
+  if(indexTip.y<middleTip.y && middleTip.y>ringTip.y) return "Класс";
+  if(thumbTip.y>indexTip.y && indexTip.y>middleTip.y) return "Отлично";
+  return null;
+}
+
+async function detectHand() {
+  const detector=await handPoseDetection.createDetector(handPoseDetection.SupportedModels.MediaPipeHands,{ runtime:"mediapipe", solutionPath:"https://cdn.jsdelivr.net/npm/@mediapipe/hands" });
+  setInterval(async()=>{
+    const hands=await detector.estimateHands(video);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(hands.length>0){
+      const keypoints=hands[0].keypoints;
+      ctx.fillStyle="red";
+      ctx.beginPath();
+      ctx.arc(keypoints[0].x*canvas.width,keypoints[0].y*canvas.height,10,0,2*Math.PI);
+      ctx.fill();
+      const gesture=recognizeGesture(keypoints);
+      if(gesture && !gestureCooldown){ gestureCooldown=true; speak(gesture+", сэр"); setTimeout(()=>gestureCooldown=false,1500);}
+    }
+  },100);
+}
+
+document.getElementById("startBtn").onclick=()=>{
+  startCamera().then(detectHand);
+  startRecognition();
+  document.getElementById("status").textContent="🎧 Слушаю и наблюдаю...";
+};
+</script>
+</body>
+</html>
